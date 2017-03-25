@@ -160,5 +160,22 @@ namespace FakeTrello.Tests.DAL
             Assert.AreEqual(expected_board_count, actual_board_count);
 
         }
+        [TestMethod]
+        public void EnsureICanEditBoardName()
+        {
+            //Arrange
+            fake_board_table.Add(new Board { BoardId = 1, Name = "My Board", Owner = sally });
+            CreateFakeDatabase();
+
+            //Act
+            string expected_board_name = "Our Board";
+            repo.EditBoardName(1, expected_board_name);
+            string actual_board_name = repo.GetBoard(1).Name;
+
+            //Assert
+            Assert.AreEqual(expected_board_name, actual_board_name);
+            fake_context.Verify(c => c.SaveChanges(), Times.Once());
+
+        }
     }
 }
